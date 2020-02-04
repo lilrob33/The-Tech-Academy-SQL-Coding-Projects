@@ -262,14 +262,18 @@ GO
 /* Queries */
 
 /* Drill 1 */
-SELECT number_Of_Copies
-FROM tbl_book_Copies
-WHERE book_ID=100 AND branch_ID=10
+SELECT Title, number_Of_Copies, branch_Name
+FROM tbl_book_Copies AS BC 
+INNER JOIN tbl_library_branch AS LB ON BC.branch_ID = LB.branch_ID
+INNER JOIN tbl_books AS BK ON BC.book_ID = BK.book_ID
+WHERE title = 'The Lost Tribe' AND branch_Name = 'Sharpstown'
 
 /* Drill 2 */
-SELECT branch_ID, number_Of_Copies
-FROM tbl_book_Copies
-WHERE book_ID=100
+SELECT *
+FROM tbl_book_Copies AS BC 
+INNER JOIN tbl_library_branch AS LB ON BC.branch_ID = LB.branch_ID
+INNER JOIN tbl_books AS BK ON BC.book_ID = BK.book_ID
+WHERE title = 'The Lost Tribe'
 
 /* Drill 3 */
 SELECT tbl_borrower.first_Name
@@ -287,21 +291,11 @@ WHERE a1.date_Due = '2020-01-30'
 AND a1.branch_ID = 10
 
 /* Drill 5 */
-SELECT COUNT(tbl_book_Loans.branch_ID) AS 'Sharpstown Loans: '
-FROM tbl_book_Loans
-WHERE tbl_book_Loans.branch_ID=10
-
-SELECT COUNT(tbl_book_Loans.branch_ID) AS 'Central Loans: '
-FROM tbl_book_Loans
-WHERE tbl_book_Loans.branch_ID=11
-
-SELECT COUNT(tbl_book_Loans.branch_ID) AS 'Hillside Loans: '
-FROM tbl_book_Loans
-WHERE tbl_book_Loans.branch_ID=12
-
-SELECT COUNT(tbl_book_Loans.branch_ID) AS 'Southside Loans: '
-FROM tbl_book_Loans
-WHERE tbl_book_Loans.branch_ID=13
+SELECT COUNT(*) AS BooksOUT, LB.Branch_Name
+FROM tbl_LIBRARY_BRANCH AS LB
+INNER JOIN tbl_book_Loans AS BL
+ON BL.Branch_ID = LB.Branch_ID
+GROUP BY LB.Branch_Name
 
 /* Drill 6 */
 SELECT tbl_borrower.first_Name, tbl_borrower.borrower_Address, 
